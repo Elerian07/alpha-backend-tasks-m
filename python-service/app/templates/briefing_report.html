@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ report.report_title }}</title>
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      body {
+        font-family: "Segoe UI", Arial, sans-serif;
+        background: #f4f6f9;
+        color: #1f2937;
+        padding: 2rem;
+      }
+
+      .report {
+        max-width: 860px;
+        margin: 0 auto;
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        overflow: hidden;
+      }
+
+      .report-header {
+        background: #1e3a5f;
+        color: #fff;
+        padding: 2rem 2.5rem;
+      }
+      .report-header h1 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+      }
+      .report-header .meta {
+        font-size: 0.875rem;
+        opacity: 0.85;
+        display: flex;
+        gap: 1.5rem;
+        flex-wrap: wrap;
+      }
+
+      .report-body {
+        padding: 2rem 2.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1.75rem;
+      }
+
+      .section h2 {
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #6b7280;
+        margin-bottom: 0.6rem;
+        padding-bottom: 0.4rem;
+        border-bottom: 1px solid #e5e7eb;
+      }
+      .section p {
+        font-size: 0.95rem;
+        line-height: 1.65;
+        color: #374151;
+      }
+
+      .section ul {
+        padding-left: 1.25rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+      }
+      .section ul li {
+        font-size: 0.95rem;
+        line-height: 1.55;
+        color: #374151;
+      }
+
+      .recommendation-box {
+        background: #f0f9ff;
+        border-left: 4px solid #0ea5e9;
+        border-radius: 4px;
+        padding: 1rem 1.25rem;
+        font-size: 0.95rem;
+        line-height: 1.65;
+        color: #0c4a6e;
+      }
+
+      .metrics-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.9rem;
+      }
+      .metrics-table th {
+        text-align: left;
+        background: #f9fafb;
+        color: #6b7280;
+        font-weight: 600;
+        padding: 0.6rem 1rem;
+        border: 1px solid #e5e7eb;
+      }
+      .metrics-table td {
+        padding: 0.6rem 1rem;
+        border: 1px solid #e5e7eb;
+        color: #1f2937;
+      }
+      .metrics-table tr:nth-child(even) td {
+        background: #f9fafb;
+      }
+
+      .report-footer {
+        background: #f9fafb;
+        border-top: 1px solid #e5e7eb;
+        padding: 1rem 2.5rem;
+        font-size: 0.8rem;
+        color: #9ca3af;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="report">
+
+      <div class="report-header">
+        <h1>{{ report.report_title }}</h1>
+        <div class="meta">
+          <span>Sector: {{ report.sector }}</span>
+          <span>Analyst: {{ report.analyst_name }}</span>
+        </div>
+      </div>
+
+      <div class="report-body">
+
+        <div class="section">
+          <h2>Executive Summary</h2>
+          <p>{{ report.summary }}</p>
+        </div>
+
+        <div class="section">
+          <h2>Key Points</h2>
+          <ul>
+            {% for point in report.key_points %}
+              <li>{{ point }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <div class="section">
+          <h2>Risks</h2>
+          <ul>
+            {% for risk in report.risks %}
+              <li>{{ risk }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <div class="section">
+          <h2>Recommendation</h2>
+          <div class="recommendation-box">{{ report.recommendation }}</div>
+        </div>
+
+        {% if report.has_metrics %}
+        <div class="section">
+          <h2>Key Metrics</h2>
+          <table class="metrics-table">
+            <thead>
+              <tr>
+                <th>Metric</th>
+                <th>Value</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for metric in report.metrics %}
+              <tr>
+                <td>{{ metric.name }}</td>
+                <td>{{ metric.value }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% endif %}
+
+      </div>
+
+      <div class="report-footer">
+        <span>InsightOps — Internal Analyst Briefing</span>
+        <span>Generated: {{ report.generated_at }}</span>
+      </div>
+
+    </div>
+  </body>
+</html>
