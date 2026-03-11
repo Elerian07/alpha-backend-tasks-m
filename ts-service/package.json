@@ -19,6 +19,7 @@
     "@nestjs/config": "^3.3.0",
     "@nestjs/core": "^10.4.15",
     "@nestjs/platform-express": "^10.4.15",
+    "@nestjs/swagger": "^11.2.6",
     "@nestjs/typeorm": "^10.0.2",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
@@ -41,7 +42,7 @@
     "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
-    "typescript": "^5.7.2",
-    "typeorm-ts-node-commonjs": "^0.3.20"
+    "typeorm-ts-node-commonjs": "^0.3.20",
+    "typescript": "^5.7.2"
   }
 }
