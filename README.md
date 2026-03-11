@@ -9,15 +9,15 @@
 
 ---
 
-## Part A — Python Service (FastAPI)
+# Part A — Python Service (FastAPI)
 
-### 1. Navigate to the service
+## 1. Navigate to the service
 
 ```bash
 cd python-service
 ```
 
-### 2. Create and activate virtual environment
+## 2. Create and activate virtual environment
 
 ```bash
 python -m venv venv
@@ -29,7 +29,7 @@ venv\Scripts\activate
 source venv/bin/activate
 ```
 
-### 3. Install dependencies
+## 3. Install dependencies
 
 ```bash
 pip install fastapi==0.115.5 "uvicorn[standard]==0.32.1" sqlalchemy==2.0.41 \
@@ -37,7 +37,7 @@ pip install fastapi==0.115.5 "uvicorn[standard]==0.32.1" sqlalchemy==2.0.41 \
   pytest==8.3.4 httpx==0.28.1
 ```
 
-### 4. Environment variables
+## 4. Environment variables
 
 Copy `.env.example` to `.env` and fill in your values:
 
@@ -45,14 +45,14 @@ Copy `.env.example` to `.env` and fill in your values:
 cp .env.example .env
 ```
 
-### 5. Create database user and database
+## 5. Create database user and database
 
 ```bash
 docker exec -it <your_postgres_container> psql -U <admin_user> -c "CREATE USER assessment_user WITH PASSWORD 'assessment_pass' SUPERUSER;"
 docker exec -it <your_postgres_container> psql -U <admin_user> -c "CREATE DATABASE assessment_db OWNER assessment_user;"
 ```
 
-### 6. Run migrations
+## 6. Run migrations
 
 ```bash
 # Windows
@@ -64,7 +64,7 @@ cat db/migrations/001_create_sample_items.sql | docker exec -i <container> psql 
 cat db/migrations/002_create_briefings.sql | docker exec -i <container> psql -U assessment_user -d assessment_db
 ```
 
-### 7. Run tests
+## 7. Run tests
 
 ```bash
 pytest tests/ -v
@@ -72,7 +72,7 @@ pytest tests/ -v
 
 All 11 tests should pass.
 
-### 8. Start the server
+## 8. Start the server
 
 ```bash
 uvicorn app.main:app --reload
@@ -81,7 +81,7 @@ uvicorn app.main:app --reload
 Server runs on `http://localhost:8000`  
 Swagger UI: `http://localhost:8000/docs`
 
-### API Endpoints
+## API Endpoints
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
@@ -90,7 +90,7 @@ Swagger UI: `http://localhost:8000/docs`
 | POST | `/briefings/{id}/generate` | Generate the report |
 | GET | `/briefings/{id}/html` | Get rendered HTML report |
 
-### Sample Request — Create Briefing
+## Sample Request — Create Briefing
 
 ```json
 POST /briefings
@@ -120,21 +120,21 @@ POST /briefings
 
 ---
 
-## Part B — TypeScript Service (NestJS)
+# Part B — TypeScript Service (NestJS)
 
-### 1. Navigate to the service
+## 1. Navigate to the service
 
 ```bash
 cd ts-service
 ```
 
-### 2. Install dependencies
+## 2. Install dependencies
 
 ```bash
 npm install
 ```
 
-### 3. Environment variables
+## 3. Environment variables
 
 Copy `.env.example` to `.env` and fill in your values:
 
@@ -144,7 +144,7 @@ cp .env.example .env
 
 > To get a free Gemini API key: https://aistudio.google.com/app/apikey
 
-### 4. Run migrations
+## 4. Run migrations
 
 ```bash
 npm run migration:run
@@ -156,7 +156,7 @@ This creates 4 tables:
 - `candidate_documents`
 - `candidate_summaries`
 
-### 5. Run tests
+## 5. Run tests
 
 ```bash
 npm run test
@@ -164,7 +164,7 @@ npm run test
 
 All 11 tests should pass.
 
-### 6. Start the server
+## 6. Start the server
 
 ```bash
 npm run start:dev
@@ -173,7 +173,7 @@ npm run start:dev
 Server runs on `http://localhost:3000`  
 Swagger UI: `http://localhost:3000/api`
 
-### Authentication
+## Authentication
 
 All endpoints require two headers:
 
@@ -182,7 +182,7 @@ All endpoints require two headers:
 | `x-user-id` | `user-1` |
 | `x-workspace-id` | `ws-1` |
 
-### API Endpoints
+## API Endpoints
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
@@ -193,7 +193,7 @@ All endpoints require two headers:
 | GET | `/candidates/{candidateId}/summaries` | List summaries |
 | GET | `/candidates/{candidateId}/summaries/{summaryId}` | Get summary by ID |
 
-### Sample Workflow
+## Sample Workflow
 
 **Step 1 — Create a candidate**
 ```bash
@@ -231,14 +231,14 @@ curl http://localhost:3000/candidates/{candidateId}/summaries/{summaryId} \
   -H "x-workspace-id: ws-1"
 ```
 
-### Summary Status Flow
+## Summary Status Flow
 
 ```
 pending → completed (success)
 pending → failed    (LLM error)
 ```
 
-### Architecture Notes
+## Architecture Notes
 
 - **LLM Provider**: Gemini 2.0 Flash via REST API. Swappable via `SUMMARIZATION_PROVIDER` token in `LlmModule`.
 - **Queue**: In-memory `QueueService` — jobs are fire-and-forget async calls.
